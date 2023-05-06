@@ -4,7 +4,6 @@
 	--secondary-color: #CD006B;
 	--third-color: #EEE325;
 }
-
 /* Reset CSS */
 * {
 	-webkit-box-sizing: border-box;
@@ -53,9 +52,9 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-body {
+/*body {
 
-}
+}*/
 section {
 	margin-block: 6em;
 }
@@ -137,6 +136,9 @@ header {
 	position: absolute;
 	bottom: 40px;
 	display: flex;
+	width: 90%; /*Étape 1*/
+	justify-content: space-between; /*Étape 1*/
+	top: 38.8%; /*Étape 1*/
 }
 .dot {
 	margin-inline: 5px;
