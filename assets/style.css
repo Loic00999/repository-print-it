@@ -136,9 +136,6 @@ header {
 	position: absolute;
 	bottom: 40px;
 	display: flex;
-	width: 90%; /*Étape 1*/
-	justify-content: space-between; /*Étape 1*/
-	top: 38.8%; /*Étape 1*/
 }
 .dot {
 	margin-inline: 5px;
