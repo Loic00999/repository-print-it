@@ -1,5 +1,4 @@
-/* *** Premiers pas sur le langage JavaScript *** */
-/* *** Projet OpennClassRooms n°5 par Loïc M *** */
+/* *** Premiers pas sur le langage JavaScript - Projet OpennClassRooms n°5 par Loïc M *** */
 const slides = [
   {
     image: "./assets/images/slideshow/slide1.jpg",
@@ -19,17 +18,9 @@ const slides = [
     tagLine: "Autocollants <span>avec découpe laser sur mesure</span>",
   },
 ];
-
 /* *** Mise à jour du code HTML via JavaScript *** */
-const removeImg = document.querySelector(".banner-img");
-removeImg.remove();
-
-function createElements() {
+function createElements(){
   const banner = document.querySelector("#banner");
-  const divBannerSlides = document.createElement("div");
-  divBannerSlides.setAttribute("id", "banner-slides");
-  divBannerSlides.classList.add("banner-img");
-  banner.appendChild(divBannerSlides);
   const arrowLeft = document.createElement("img");
   arrowLeft.setAttribute("id", "arrow_left");
   arrowLeft.classList.add("arrow");
@@ -47,32 +38,12 @@ function createElements() {
   document.querySelector("p").classList.add("taglinelabel");
 }
 createElements();
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-function addSlideInBanner() {
-  const bannerSlides = document.getElementById("banner-slides");
-  slides.forEach(function (slide, index) {    
-    const divImg = document.createElement("img");
-    divImg.setAttribute("id", index);
-    divImg.classList.add("banner-img");
-    divImg.classList.add("picSlide");
-    divImg.setAttribute("src", slide.image);
-    divImg.setAttribute("alt", slide.tagLine);
-    bannerSlides.appendChild(divImg);
-    if (index != 0) {
-      divImg.style.display = "none";
-    }
-    console.log(slide);
-  });
-}
-addSlideInBanner();
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-function createSpansDot() {
-  let slide;
+/* *** Création des dots *** */
+let slide;
+function createSpansDot(){
   for (slide in slides) {
     const spanDot = document.createElement("span");
-    spanDot.setAttribute("id", "current-" + slide);
+    spanDot.setAttribute("id", slide);
     spanDot.classList.add("dot");
     document.querySelector(".dots").appendChild(spanDot);
     if (slide == 0) {
@@ -81,94 +52,33 @@ function createSpansDot() {
   }
 }
 createSpansDot();
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
 /* *** Action addEventListener *** */
-let slideIndex = 0;
-let tagLineIndex = 0;
-const updateTagLine = document.querySelector(".taglinelabel");
-
-/* Arrows */
-/* Arrow Right */
-function clickArrowRight() {
-  showSlides();
-  upGradeTagLine(tagLineIndex += 1);
+function clickArrowRight(){/* Arrow Right */
+  showSlides(slideIndex += 1);
   console.log(clickArrowRight);
 }
 const arrow_right = document.getElementById("arrow_right");
 arrow_right.addEventListener("click", clickArrowRight);
-/* Arrow Left */
-function clickArrowLeft() {
+function clickArrowLeft(){/* Arrow Left */
   showSlides(slideIndex += -1);
-  upGradeTagLine(tagLineIndex += -1);
   console.log(clickArrowLeft);
 }
 const arrow_left = document.getElementById("arrow_left");
 arrow_left.addEventListener("click", clickArrowLeft);
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* Carousel */
-function showSlides() {
-  let i;
-  let slides = document.getElementsByClassName("picSlide");
-  let dots = document.getElementsByClassName("dot");
-  slideIndex++;
-  if (slideIndex > slides.length) {
-    slideIndex = 0;
-  }
-  if (slideIndex < 1) {
-    slideIndex = slides.length;
-  }
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-    dots[i].className = dots[i].className.replace(" dot_selected", "");
-  }
-  console.log(slideIndex);
-  slides[slideIndex -1].style.display = "block";
-  dots[slideIndex -1].className += " dot_selected";
- 
-  console.log(showSlides);
+/* *** Carousel *** */
+const showSlide = document.querySelector(".banner-img");
+const contentTagLine = document.querySelector(".taglinelabel");
+let slideIndex = 0;
+function showSlides() {/* fonction de Carousel */
+  const nSlides = slides.length;/* Variable taille du tableau slides */
+  if (slideIndex > nSlides - 1) {slideIndex = 0;}/* Boucle carousel positive */
+  if (slideIndex < 0) {slideIndex = nSlides - 1;}/* Boucle carousel négative */
+  let updateBanner = slides[slideIndex].image;/* Mise à jour banner */
+  showSlide.setAttribute("src", updateBanner);/* Mise à jour banner */
+  let updateTagLine = slides[slideIndex].tagLine;/* Mise à jour tagLine */
+  contentTagLine.innerHTML = updateTagLine;/* Mise à jour tagLine */
+  const allDots = document.querySelectorAll(".dot");/* Mise à jour du dot en focus */
+  let focusDot = document.querySelector(".dot_selected");/* Mise à jour du dot en focus */
+  focusDot.classList.remove("dot_selected");/* Mise à jour du dot en focus */
+  allDots[slideIndex].classList.add("dot_selected");/* Mise à jour du dot en focus */
 }
-
-function upGradeTagLine() {
-  let i;
-  let tagLine = document.getElementsByClassName("taglinelabel");
-  for (i = 0; i < tagLine.length; i++) {
-    tagLine[i].innerHTML = slides[tagLineIndex].tagLine;
-  }
-  slides[tagLineIndex -1].innerHTML = slides[tagLineIndex].tagLine;  
-  console.log(upGradeTagLine);
-}
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* Dots */
-function clickDot1() {
-  showSlides(slideIndex = 1);
-  updateTagLine.innerHTML = slides[0].tagLine;
-}
-const current1 = document.getElementById("current-0");
-current1.addEventListener("click", clickDot1);
-
-function clickDot2() {
-  showSlides(slideIndex = 2);
-  updateTagLine.innerHTML = slides[1].tagLine;
-}
-const current2 = document.getElementById("current-1");
-current2.addEventListener("click", clickDot2);
-
-function clickDot3() {
-  showSlides(slideIndex = 3);
-  updateTagLine.innerHTML = slides[2].tagLine;
-}
-const current3 = document.getElementById("current-2");
-current3.addEventListener("click", clickDot3);
-
-function clickDot4() {
-  showSlides(slideIndex = 4);
-  updateTagLine.innerHTML = slides[3].tagLine;
-}
-const current4 = document.getElementById("current-3");
-current4.addEventListener("click", clickDot4);
